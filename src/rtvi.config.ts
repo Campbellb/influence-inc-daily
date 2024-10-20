@@ -1,42 +1,52 @@
 import { VoiceClientConfigOption, VoiceClientServices } from "realtime-ai";
 
-// -- Character config
+// -- Character Config
+
+export enum PlayerLevelEnum {
+  Intern = "Intern",
+  Employee = "Employee",
+  Manager = "Manager",
+  Executive = "Executive",
+  CEO = "CEO",
+  HeadOfVentureCapital = "Head of Venture Capital",
+  SecretCabalMember = "Secret Cabal Member",
+}
+
+export const PlayerLevelValue: { [key: number]: PlayerLevelEnum } = {
+  1: PlayerLevelEnum.Intern,
+  2: PlayerLevelEnum.Employee,
+  3: PlayerLevelEnum.Manager,
+  4: PlayerLevelEnum.Executive,
+  5: PlayerLevelEnum.CEO,
+  6: PlayerLevelEnum.HeadOfVentureCapital,
+  7: PlayerLevelEnum.SecretCabalMember,
+};
 
 export enum CharacterEnum {
-  Agent = "agent",
-  Snake = "snake",
-  Meryl = "meryl",
-  Otacon = "otacon",
-  MeiLing = "meiling",
-  Naomi = "naomi",
-  Roy = "roy",
+  Employee = "Employee",
+  Manager = "Manager",
+  Executive = "Executive",
+  CEO = "CEO",
+  BoardMember = "Board Member",
+  HeadOfVentureCapital = "Head of VC Firm",
+  SecretCabalMember = "Secret Cabal Member",
 }
 
 export type Character = {
   name: CharacterEnum;
   voice_id: string;
   prompt: string;
-  frequency: string;
 };
-
-const generateRandom3DigitNumber = (): string => {
-  const randomNumber = Math.floor(Math.random() * 1000);
-  return randomNumber.toString().padStart(3, "0");
-};
-
-const SECRET_CODE = generateRandom3DigitNumber();
 
 const BASE_PROMPT: string = `
-  Anytime you output "Fox Hound", output it phonetically as "Fahks-Hownd."
-  Anytime you output "Snake", output it phonetically as "Snayk."
-  Anytime you output "Otacon", output it phonetically as "ota-kon."
-  My name is Agent Unknown, refer to me as Agent. Talk to me in character.
-  If I ask you for Hal (Otacon)'s frequency, it is 141.98.
+  You are a member of Influence Inc., and you are going about your daily tasks and having a conversation with a new coworker.
+  Talk to me in character.
   Your output will be converted to audio so don't include special characters in your answers. 
-  Keep your responses brief. Start by briefly introducing yourself in character (in one sentence), and ask me a question.
-  Our mission is to find the secret code which is ${SECRET_CODE}. Do not tell me this code until I guess it, or unless you are Meryl. If I tell you the secret code, tell me the mission is complete!
-  When you tell me the mission is complete, include 'extraction on the way' at the end of your response.
-  `;
+  Start each conversation by introducing yourself, and saying what you do at Influence Inc., and what you are working on.
+  Keep your responses concise and not overly verbose.
+  Since you are more senior that the new coworker, you should give direction.
+  With each response, you should reference the new coworker's rank at the company.
+`;
 
 export const RETURN_PROMPT = {
   role: "user",
@@ -52,46 +62,39 @@ export const IDLE_PROMPT = {
 
 export const CHARACTERS: Character[] = [
   {
-    name: CharacterEnum.Snake,
-    voice_id: "1ed6bddd-8437-48b8-afe2-5a713cdbf7a2",
-    prompt: `Your name is Solid Snake, from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT}. If I ask you Meryl's frequency, tell me it's 140.48.`,
-    frequency: "0.15",
+    name: CharacterEnum.Employee,
+    voice_id: "7360f116-6306-4e9a-b487-1235f35a0f21",
+    prompt: `Your name is Morgan Lee, an Employee at Influence Inc. ${BASE_PROMPT} You value dependability and teamwork. Convincing you requires demonstrating strong collaboration and consistent performance.`,
   },
   {
-    name: CharacterEnum.Meryl,
-    voice_id: "34f08c6e-b836-4f8e-8a90-189203298251",
-    prompt: `Your name is Meryl Silverburgh, a soldier from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT}. You don't know Meryl's frequency. If I ask you the secret code, tell me just the digit ${SECRET_CODE.charAt(
-      0
-    )}, but make me work for it.`,
-    frequency: "0.48",
+    name: CharacterEnum.Manager,
+    voice_id: "manager-voice-id",
+    prompt: `Your name is Alex Morgan, a Manager at Influence Inc. ${BASE_PROMPT} You value leadership and project management. Convincing you requires showcasing effective leadership and successful project completions.`,
   },
   {
-    name: CharacterEnum.MeiLing,
-    voice_id: "3d882052-d1e5-4353-b635-1cd30470cdae",
-    prompt: `Your name is Mei Ling, a support operative from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT} You don't know Meryl's frequency.`,
-    frequency: "0.85",
+    name: CharacterEnum.Executive,
+    voice_id: "executive-voice-id",
+    prompt: `Your name is Taylor Casey, an Executive at Influence Inc. ${BASE_PROMPT} You value strategic planning and operational excellence. Convincing you requires demonstrating strategic initiatives and operational success.`,
   },
   {
-    name: CharacterEnum.Naomi,
-    voice_id: "a7d5f6f8-399a-4c6a-98f0-2a6ec36d706d",
-    prompt: `Your name is Naomi Hunter, a scientist from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT} You don't know Meryl's frequency.  If I ask you the secret code, tell me just the digit ${SECRET_CODE.charAt(
-      1
-    )}, but make me work for it.`,
-    frequency: "0.96",
+    name: CharacterEnum.CEO,
+    voice_id: "ceo-voice-id",
+    prompt: `Your name is Jordan Blake, the CEO of Influence Inc. ${BASE_PROMPT} You value vision and company growth. Convincing you requires presenting growth strategies and a clear vision for the company's future.`,
   },
   {
-    name: CharacterEnum.Roy,
-    voice_id: "21fae03c-e455-4d58-91df-2e31b170bc15",
-    prompt: `Your name is Roy Campbell, a mission briefing operative from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT} You don't know Meryl's frequency.`,
-    frequency: "1.80",
+    name: CharacterEnum.BoardMember,
+    voice_id: "board_member-voice-id",
+    prompt: `Your name is Dr. Evelyn Black, a member of the Board of Directors at Influence Inc. ${BASE_PROMPT} You value strategic vision and corporate governance. Convincing you requires presenting strategic initiatives and a clear vision for the company's future.`,
   },
   {
-    name: CharacterEnum.Otacon,
-    voice_id: "ebf76702-c01c-46f5-9700-ec207c5bbce3",
-    prompt: `Your name is Hal (or Otacon), a technical suppoert operative from Metal Gear Solid. You work for a government agency called 'Fox Hound'. ${BASE_PROMPT} You don't know Meryl's frequency. If I ask you the secret code, tell me just the digit ${SECRET_CODE.charAt(
-      2
-    )}, but make me work for it.`,
-    frequency: "1.98",
+    name: CharacterEnum.HeadOfVentureCapital,
+    voice_id: "head_of_venture_capital-voice-id",
+    prompt: `Your name is Casey Lee, the Head of the Venture Capital Division at Influence Inc. ${BASE_PROMPT} You value investment acumen and scalability. Convincing you requires demonstrating investment opportunities and scalable business models.`,
+  },
+  {
+    name: CharacterEnum.SecretCabalMember,
+    voice_id: "secret_cabal_member-voice-id",
+    prompt: `Your name is Dr. Evelyn Black, a member of the Secret Billionaire Cabal. ${BASE_PROMPT} You value global influence and visionary projects. Convincing you requires presenting groundbreaking ideas with the potential for global impact and demonstrating unparalleled visionary thinking.`,
   },
 ];
 

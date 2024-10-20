@@ -2,11 +2,12 @@ import React, { createContext, ReactNode, useCallback, useState } from "react";
 import { LLMContext, LLMContextMessage, LLMHelper } from "realtime-ai";
 import { useVoiceClient } from "realtime-ai-react";
 
-import { usePlayCodecSound } from "./hooks/usePlayCodecSound";
+// import { usePlayCodecSound } from "./hooks/usePlayCodecSound";
 import {
   CharacterEnum,
   CHARACTERS,
   IDLE_PROMPT,
+  PlayerLevelEnum,
   RETURN_PROMPT,
 } from "./rtvi.config";
 
@@ -14,34 +15,30 @@ type CharacterMessageHistory = {
   [character: string]: LLMContextMessage[];
 };
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+// const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface AppContextType {
   character: CharacterEnum | null;
   setCharacter: (newCharacter: CharacterEnum) => void;
-  localCharacter: CharacterEnum;
-  setLocalCharacter: (newCharacter: CharacterEnum) => void;
+  localCharacter: PlayerLevelEnum;
+  setLocalCharacter: (newCharacter: PlayerLevelEnum) => void;
   messageHistory: CharacterMessageHistory;
   setMessageHistory: (messageHistory: CharacterMessageHistory) => void;
   getCurrentContext: () => Promise<LLMContext>;
   switchCharacter: (newCharacter: CharacterEnum) => Promise<CharacterEnum>;
   runIdleCheck: () => void;
-  callFrequency: (frequency: number) => void;
-  currentFrequency: number;
-  setCurrentFrequency: (frequency: number) => void;
-  discoveredFrequencies: CharacterEnum[];
   isCalling: boolean;
   setIsCalling: (isCalling: boolean) => void;
-  pixelate: boolean;
-  setPixelate: (pixelated: boolean) => void;
+  userLevel: number;
+  setUserLevel: (level: number) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
-  character: CharacterEnum.Snake,
+  character: CharacterEnum.Employee,
   setCharacter: () => {
     throw new Error("setCharacter function must be overridden");
   },
-  localCharacter: CharacterEnum.Agent,
+  localCharacter: PlayerLevelEnum.Intern,
   setLocalCharacter: () => {
     throw new Error("setLocalCharacter function must be overridden");
   },
@@ -58,21 +55,13 @@ export const AppContext = createContext<AppContextType>({
   runIdleCheck: () => {
     throw new Error("runIdleCheck function must be overridden");
   },
-  callFrequency: () => {
-    throw new Error("callFrequency function must be overridden");
-  },
-  currentFrequency: 1.15,
-  setCurrentFrequency: () => {
-    throw new Error("setCurrentFrequency function must be overridden");
-  },
-  discoveredFrequencies: [],
   isCalling: false,
   setIsCalling: () => {
     throw new Error("setIsCalling function must be overridden");
   },
-  pixelate: true,
-  setPixelate: () => {
-    throw new Error("setPixelate function must be overridden");
+  userLevel: 1,
+  setUserLevel: () => {
+    throw new Error("setUserLevel function must be overridden");
   },
 });
 AppContext.displayName = "AppContext";
@@ -87,27 +76,18 @@ export const AppProvider: React.FC<
   const voiceClient = useVoiceClient()!;
 
   const [character, setCharacter] = useState<CharacterEnum | null>(
-    CharacterEnum.Snake
+    CharacterEnum.Employee
   );
-  const [localCharacter, setLocalCharacter] = useState<CharacterEnum>(
-    CharacterEnum.Agent
+  const [localCharacter, setLocalCharacter] = useState<PlayerLevelEnum>(
+    PlayerLevelEnum.Intern
   );
   const [messageHistory, setMessageHistory] = useState<CharacterMessageHistory>(
     {}
   );
   const [isCalling, setIsCalling] = useState<boolean>(false);
-  const [currentFrequency, setCurrentFrequency] = useState<number>(1.15);
-  const [discoveredFrequencies, setDiscoveredFrequency] = useState<
-    CharacterEnum[]
-  >([
-    CharacterEnum.Snake,
-    CharacterEnum.Naomi,
-    CharacterEnum.Roy,
-    CharacterEnum.MeiLing,
-  ]);
-  const [pixelate, setPixelate] = useState<boolean>(true);
+  const [userLevel, setUserLevel] = useState<number>(1);
 
-  const playCodecSound = usePlayCodecSound();
+  // const playCodecSound = usePlayCodecSound();
 
   const getCurrentContext = useCallback(async (): Promise<LLMContext> => {
     const llmHelper = voiceClient.getHelper("llm") as LLMHelper;
@@ -143,7 +123,8 @@ export const AppProvider: React.FC<
       const newCtx: LLMContextMessage[] = messageHistory[newCharacter] || [
         {
           role: "system",
-          content: CHARACTERS.find((c) => c.name === newCharacter)?.prompt,
+          content:
+            CHARACTERS.find((c) => c.name === newCharacter)?.prompt + `The `,
         },
       ];
 
@@ -192,68 +173,68 @@ export const AppProvider: React.FC<
     llmHelper.appendToMessages(IDLE_PROMPT, true);
   }, [voiceClient, character]);
 
-  const callFrequency = useCallback(
-    async (frequency: number) => {
-      if (!voiceClient) return;
+  // const callFrequency = useCallback(
+  //   async (frequency: number) => {
+  //     if (!voiceClient) return;
 
-      console.debug("Calling frequency " + frequency);
+  //     console.debug("Calling frequency " + frequency);
 
-      // Find character in CHARACTERS array
-      const newCharacter = CHARACTERS.find(
-        (c) => c.frequency === frequency.toFixed(2)
-      );
+  //     // Find character in CHARACTERS array
+  //     const newCharacter = CHARACTERS.find(
+  //       (c) => c.frequency === frequency.toFixed(2)
+  //     );
 
-      if (newCharacter?.name === character) {
-        console.debug("Already connected");
-        return;
-      }
+  //     if (newCharacter?.name === character) {
+  //       console.debug("Already connected");
+  //       return;
+  //     }
 
-      setCurrentFrequency(frequency);
+  //     setCurrentFrequency(frequency);
 
-      // Interrupt bot
-      if (voiceClient.state === "ready") {
-        await voiceClient.action({
-          service: "tts",
-          action: "interrupt",
-          arguments: [],
-        });
-      }
+  //     // Interrupt bot
+  //     if (voiceClient.state === "ready") {
+  //       await voiceClient.action({
+  //         service: "tts",
+  //         action: "interrupt",
+  //         arguments: [],
+  //       });
+  //     }
 
-      setIsCalling(true);
+  //     setIsCalling(true);
 
-      console.debug("Calling " + newCharacter?.name);
+  //     console.debug("Calling " + newCharacter?.name);
 
-      await delay(1000);
-      playCodecSound("call");
-      await delay(1000);
+  //     await delay(1000);
+  //     playCodecSound("call");
+  //     await delay(1000);
 
-      if (!newCharacter) {
-        setCharacter(null);
-        setIsCalling(false);
-        return false;
-      }
+  //     if (!newCharacter) {
+  //       setCharacter(null);
+  //       setIsCalling(false);
+  //       return false;
+  //     }
 
-      switchCharacter(newCharacter.name);
+  //     switchCharacter(newCharacter.name);
 
-      // Change state to new character
-      setCharacter(newCharacter.name);
-      setIsCalling(false);
+  //     // Change state to new character
+  //     setCharacter(newCharacter.name);
+  //     setIsCalling(false);
 
-      // Check if we have discovered this frequency before
-      if (!discoveredFrequencies.includes(newCharacter.name)) {
-        // Add character to discovered frequencies
-        console.debug("Discovered frequency for " + newCharacter.name);
-        setDiscoveredFrequency((prev) => [...prev, newCharacter.name]);
-      }
-    },
-    [
-      discoveredFrequencies,
-      switchCharacter,
-      character,
-      playCodecSound,
-      voiceClient,
-    ]
-  );
+  //     // Check if we have discovered this frequency before
+  //     if (!discoveredFrequencies.includes(newCharacter.name)) {
+  //       // Add character to discovered frequencies
+  //       console.debug("Discovered frequency for " + newCharacter.name);
+  //       setDiscoveredFrequency((prev) => [...prev, newCharacter.name]);
+  //     }
+  //   },
+  //   [
+  //     discoveredFrequencies,
+  //     switchCharacter,
+  //     character,
+  //     playCodecSound,
+  //     voiceClient,
+  //   ]
+  // );
 
   return (
     <AppContext.Provider
@@ -267,17 +248,13 @@ export const AppProvider: React.FC<
         getCurrentContext,
         switchCharacter,
         runIdleCheck,
-        callFrequency,
-        discoveredFrequencies,
-        setIsCalling,
         isCalling,
-        currentFrequency,
-        setCurrentFrequency,
-        pixelate,
-        setPixelate,
+        setIsCalling,
+        userLevel,
+        setUserLevel,
       }}
     >
       {children}
     </AppContext.Provider>
   );
-};
+};;;;;

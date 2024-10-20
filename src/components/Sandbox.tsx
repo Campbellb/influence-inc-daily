@@ -10,8 +10,6 @@ import { useIdleTimer } from "@/hooks/useIdleTimer";
 
 import Footer from "./Footer";
 import OSD from "./OSD";
-import Phonebook from "./Phonebook";
-import Pixelate from "./Pixelate";
 import Transcript from "./Transcript";
 
 export default function Sandbox() {
@@ -71,18 +69,8 @@ export default function Sandbox() {
 
   return (
     <div className="flex flex-col h-full items-center w-full">
-      <Pixelate />
-
-      <OSD
-        handleTogglePhonebook={() => {
-          setShowPhonebook(!showPhonebook);
-        }}
-        handleSwitchCharacter={(character) => {
-          switchCharacter(character);
-        }}
-      />
+      <OSD />
       <Transcript active={!showPhonebook} />
-      <Phonebook active={showPhonebook} />
       <Footer handleDisconnect={() => disconnect()} />
     </div>
   );

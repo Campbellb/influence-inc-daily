@@ -94,12 +94,12 @@ export default function Session() {
     }
 
     // Start background music
-    const music = new Audio("/music.mp3");
-    music.currentTime = 0;
-    music.volume = 0.04;
-    music.loop = true;
-    music.play();
-    musicRef.current = music;
+    // const music = new Audio("/music.mp3");
+    // music.currentTime = 0;
+    // music.volume = 0.04;
+    // music.loop = true;
+    // music.play();
+    // musicRef.current = music;
   }
 
   async function disconnect() {
@@ -143,16 +143,9 @@ export default function Session() {
 
   return (
     <div className="flex flex-col h-full items-center w-full">
-      <OSD
-        handleTogglePhonebook={() => {
-          setShowPhonebook(!showPhonebook);
-        }}
-        handleSwitchCharacter={(character) => {
-          switchCharacter(character);
-        }}
-      />
+      <OSD />
       <Transcript active={!showPhonebook} />
-      <Phonebook active={showPhonebook} />
+      {/* <Phonebook active={showPhonebook} /> */}
       <Footer handleDisconnect={() => disconnect()} />
     </div>
   );

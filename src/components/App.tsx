@@ -9,7 +9,6 @@ import { VoiceClientAudio, VoiceClientProvider } from "realtime-ai-react";
 import { AppProvider } from "@/context";
 import { config, services, timeout } from "@/rtvi.config";
 
-import Pixelate from "./Pixelate";
 import Sandbox from "./Sandbox";
 import Session from "./Session";
 import Splash from "./Splash";
@@ -79,8 +78,6 @@ export default function App() {
   return (
     <VoiceClientProvider voiceClient={voiceClient}>
       <AppProvider>
-        <Pixelate />
-
         {showSplash ? (
           <Splash onReady={() => setShowSplash(false)} ready={assetsLoaded} />
         ) : (

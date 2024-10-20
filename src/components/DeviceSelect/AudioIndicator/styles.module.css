@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 .bar div {
-  background: theme(colors.green.500);
+  background: theme(colors.red.500);
   height: 8px;
   width: 0px;
   transition: width 0.1s ease;

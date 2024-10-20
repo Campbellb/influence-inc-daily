@@ -20,7 +20,7 @@ const Transcript: React.FC<Props> = ({ active }) => {
   const { isCalling, character } = useContext(AppContext);
   const [compiledTranscript, setCompiledTranscript] =
     React.useState<string>("");
-  const debouncedTranscript = useDebounce(compiledTranscript, 500);
+  const debouncedTranscript = useDebounce(compiledTranscript, 800);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(
