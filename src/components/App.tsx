@@ -12,17 +12,6 @@ import { config, services, timeout } from "@/rtvi.config";
 import Session from "./Session";
 
 const assets = [
-  "/zip.wav",
-  "/gunshot.wav",
-  "/music.mp3",
-  "/gameover.mp3",
-  "/agent_base.png",
-  "/hal_base.png",
-  "/meiling_base.png",
-  "/meryl_base.png",
-  "/naomi_base.png",
-  "/roy_base.png",
-  "/snake_base.png",
   "/bg.jpg",
   "/intern_bg.jpg",
   "/employee_bg.jpg",
