@@ -24,11 +24,11 @@
 
   @screen lg {
     --osd-frequency-size: 68px;
-    --osd-width: 304px;
-    --osd-height: 177px;
-    --osd-padding: 30px;
-    --portrait-lg-w: 208px;
-    --portrait-lg-h: 356px;
+    --osd-width: 400px;
+    --osd-height: 233px;
+    --osd-padding: 40px;
+    --portrait-lg-w: 300px;
+    --portrait-lg-h: 512px;
   }
 }
 

@@ -9,9 +9,7 @@ import { VoiceClientAudio, VoiceClientProvider } from "realtime-ai-react";
 import { AppProvider } from "@/context";
 import { config, services, timeout } from "@/rtvi.config";
 
-import Sandbox from "./Sandbox";
 import Session from "./Session";
-import Splash from "./Splash";
 
 const assets = [
   "/codeccall.wav",
@@ -37,7 +35,7 @@ const assets = [
 export default function App() {
   const mountedRef = useRef(false);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
   const [voiceClient, setVoiceClient] = useState<DailyVoiceClient | null>(null);
 
   useEffect(() => {
@@ -78,11 +76,7 @@ export default function App() {
   return (
     <VoiceClientProvider voiceClient={voiceClient}>
       <AppProvider>
-        {showSplash ? (
-          <Splash onReady={() => setShowSplash(false)} ready={assetsLoaded} />
-        ) : (
-          <Session />
-        )}
+        <Session />
       </AppProvider>
       <VoiceClientAudio />
     </VoiceClientProvider>

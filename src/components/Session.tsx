@@ -16,6 +16,7 @@ import Gameover from "./Gameover";
 import MissionComplete from "./MissionComplete";
 import OSD from "./OSD";
 import Phonebook from "./Phonebook";
+import QuestLog from "./QuestLog";
 import TitleScreen from "./TitleScreen";
 import Transcript from "./Transcript";
 
@@ -89,7 +90,7 @@ export default function Session() {
       // to avoid interrupting the bot's welcome message
       await voiceClient.start();
     } catch (e) {
-      setError((e as VoiceError).message || "Unknown error occured");
+      setError((e as VoiceError).message || "Unknown error occurred");
       voiceClient.disconnect();
     }
 
@@ -138,17 +139,18 @@ export default function Session() {
   }
 
   if (appState === "connecting") {
-    return <CallNotification state={appState} />;
+    return <></>;
   }
 
   return (
-    <div className="flex flex-col h-full items-center w-full">
-      <OSD />
-      <Transcript active={!showPhonebook} />
-      <p>
-        {localCharacter} ({userLevel})
-      </p>
-      <Footer handleDisconnect={() => disconnect()} />
+    <div className="flex flex-col h-full w-full bg-white p-4">
+      <div className="flex-grow">
+        <OSD />
+        <Transcript active={!showPhonebook} />
+      </div>
+      <div className="mt-auto">
+        <Footer handleDisconnect={() => disconnect()} />
+      </div>
     </div>
   );
 }

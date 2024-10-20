@@ -27,7 +27,7 @@ const pixelFont = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Metal Gear Solid Codec",
+  title: "Influence Inc Career Simulator",
   description: "Daily Bots multi-character demo",
   metadataBase: new URL("https://mgsx-daily-bots.vercel.app"),
 };

@@ -6,6 +6,7 @@ import { useVoiceClient } from "realtime-ai-react";
 import {
   CharacterEnum,
   CHARACTERS,
+  CharacterValue,
   IDLE_PROMPT,
   PlayerLevelEnum,
   PlayerLevelValue,
@@ -33,6 +34,9 @@ interface AppContextType {
   userLevel: number;
   setUserLevel: (level: number) => void;
   checkForPromotion: (transcript: string) => void;
+  resetUserLevel: () => void;
+  secretValue: number;
+  setSecretValue: (value: number) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -46,7 +50,7 @@ export const AppContext = createContext<AppContextType>({
   },
   messageHistory: {},
   setMessageHistory: () => {
-    throw new Error("setCurrentMessages function must be overridden");
+    throw new Error("setMessageHistory function must be overridden");
   },
   getCurrentContext: () => {
     throw new Error("getCurrentContext function must be overridden");
@@ -67,6 +71,13 @@ export const AppContext = createContext<AppContextType>({
   },
   checkForPromotion: () => {
     throw new Error("checkForPromotion function must be overridden");
+  },
+  resetUserLevel: () => {
+    throw new Error("resetUserLevel function must be overridden");
+  },
+  secretValue: 0,
+  setSecretValue: () => {
+    throw new Error("setSecretValue function must be overridden");
   },
 });
 AppContext.displayName = "AppContext";
@@ -91,6 +102,7 @@ export const AppProvider: React.FC<
   );
   const [isCalling, setIsCalling] = useState<boolean>(false);
   const [userLevel, setUserLevel] = useState<number>(1);
+  const [secretValue, setSecretValue] = useState<number>(0);
 
   // const playCodecSound = usePlayCodecSound();
 
@@ -135,6 +147,18 @@ export const AppProvider: React.FC<
             }"`,
         },
       ];
+
+      if (newCharacter === CharacterEnum.Employee) {
+        const newSecretValue = Math.floor(Math.random() * 5) + 1; // Random number between 1 and 5
+        setSecretValue(newSecretValue);
+
+        // Update the prompt with the secret value
+        const updatedPrompt = CHARACTERS.find(
+          (c) => c.name === CharacterEnum.Employee
+        )?.prompt.replace("{SECRET_VALUE}", newSecretValue.toString());
+
+        newCtx[0].content = updatedPrompt || newCtx[0].content;
+      }
 
       // Create new config object for character
       const newConfig = voiceClient.setConfigOptions([
@@ -184,17 +208,26 @@ export const AppProvider: React.FC<
   const checkForPromotion = useCallback(
     (transcript: string) => {
       const currentCharacter = CHARACTERS.find((c) => c.name === character);
+      console.log("currentCharacter", currentCharacter);
+      console.log("transcript", transcript);
       if (
         currentCharacter &&
         transcript.includes(currentCharacter.promotionCriteria)
       ) {
         setUserLevel((prevLevel) => prevLevel + 1);
         setLocalCharacter(PlayerLevelValue[userLevel + 1]);
-        // switchCharacter(CHARACTERS[userLevel + 1].name);
+        console.log("level up!");
+        switchCharacter(CharacterValue[userLevel + 1]);
       }
     },
-    [character, userLevel]
+    [character, switchCharacter, userLevel]
   );
+
+  const resetUserLevel = useCallback(() => {
+    setUserLevel(1);
+    setLocalCharacter(PlayerLevelEnum.Intern);
+    setCharacter(CharacterEnum.Employee);
+  }, []);
 
   // const callFrequency = useCallback(
   //   async (frequency: number) => {
@@ -276,9 +309,12 @@ export const AppProvider: React.FC<
         userLevel,
         setUserLevel,
         checkForPromotion,
+        resetUserLevel,
+        secretValue,
+        setSecretValue,
       }}
     >
       {children}
     </AppContext.Provider>
   );
-};;;;;
+};

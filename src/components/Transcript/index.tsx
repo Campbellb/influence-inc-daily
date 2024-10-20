@@ -4,7 +4,8 @@ import { VoiceEvent } from "realtime-ai";
 import { useVoiceClientEvent } from "realtime-ai-react";
 
 import { AppContext } from "@/context";
-import { cn } from "@/utils/tailwind";
+
+import styles from "./styles.module.css";
 
 type Props = {
   active: boolean;
@@ -32,7 +33,6 @@ const Transcript: React.FC<Props> = ({ active }) => {
 
   useEffect(() => {
     setCompiledTranscript("");
-
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   }, [isCalling, character]);
 
@@ -67,14 +67,11 @@ const Transcript: React.FC<Props> = ({ active }) => {
     return newTranscript;
   };
 
+  if (!active) return null;
+
   return (
-    <div
-      className={cn(
-        "flex-1 w-full max-w-4xl h-full flex flex-col items-center pt-20",
-        !active && "hidden"
-      )}
-    >
-      <p className="text-3xl leading-relaxed">{debouncedTranscript}</p>
+    <div className={styles.transcriptContainer}>
+      <p className={styles.transcriptText}>{debouncedTranscript}</p>
     </div>
   );
 };

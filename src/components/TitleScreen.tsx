@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import { useVoiceClient } from "realtime-ai-react";
 
 import Logo from "@/assets/logo.svg";
+import { AppContext } from "@/context";
 import { usePlayCodecSound } from "@/hooks/usePlayCodecSound";
 
 import { Button } from "./ui/button";
@@ -15,6 +16,7 @@ interface TitleScreenProps {
 const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
   const [started, setStarted] = useState(false);
   const voiceClient = useVoiceClient()!;
+  const { resetUserLevel } = useContext(AppContext);
 
   useEffect(() => {
     if (!voiceClient) return;
@@ -60,7 +62,7 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
             className="self-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
             onClick={() => {
               setStarted(true);
-
+              resetUserLevel();
               setTimeout(() => {
                 handleStart();
               }, 2000);

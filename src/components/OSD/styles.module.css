@@ -1,103 +1,142 @@
 .container {
-  padding: 0 var(--osd-padding);
   width: 100%;
-
-  @screen xl {
-    max-width: theme(maxWidth.7xl);
-  }
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .inner {
   display: flex;
-  flex-flow: row nowrap;
-  height: var(--portrait-lg-h);
-  border: 1px solid theme(colors.mgs.darkest);
-  padding: 0 var(--osd-padding);
-  border-right: 1px solid theme(colors.mgs.darkest);
-  background-color: black;
-  position: relative;
-  flex: 1;
-  width: 100%;
-  z-index: 2;
-  flex-grow: 0;
+  justify-content: space-between;
+  align-items: stretch;
+  background-color: #f0f0f0;
+  border: 2px solid #333;
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.center {
-  display: flex;
-  flex-flow: column wrap;
-  align-content: space-between;
-  justify-content: center;
-  flex: 1;
+.inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 40px;
+  right: 40px;
+  height: 1px;
+  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
+}
+
+.characterPortrait,
+.playerPortrait {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border: 2px solid #333;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.characterPortrait img,
+.playerPortrait img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-.controls {
+.infoPanel {
+  flex-grow: 1;
+  margin: 0 40px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  padding: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: 'Courier New', monospace;
+}
+
+.infoPanel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
+}
+
+.infoTitle {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-decoration: underline;
+}
+
+.infoContent {
+  font-size: 1.3rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.level {
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.tasks {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task {
   display: flex;
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-flow: row nowrap;
-  padding: 0 10px;
+  align-items: flex-start;
+  margin-bottom: 15px;
+  color: #333;
 }
 
-.header {
-  width: 100%;
-  position: relative;
-  margin-top: -1px;
-  background-color: black;
-  z-index: 2;
+.bullet {
+  margin-right: 20px;
+}
 
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 10px;
-    right: 10px;
-    height: 3px;
-    background-color: theme(colors.mgs.darkest);
-    z-index: 1;
+.speaking,
+.notSpeaking {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.speaking {
+  background-color: #4CAF50;
+  animation: pulse 1s infinite;
+}
+
+.notSpeaking {
+  background-color: #ccc;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
   }
-
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 100px;
-    right: 100px;
-    height: 3px;
-    background-color: theme(colors.mgs.darkest);
-    z-index: 1;
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 
-.footer {
-  width: 100%;
-  position: relative;
-  margin-bottom: -1px;
-  background-color: black;
-  z-index: 2;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 100px;
-    right: 100px;
-    height: 3px;
-    background-color: theme(colors.mgs.darkest);
-    z-index: 1;
-  }
-
-  &:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 10px;
-    right: 10px;
-    height: 3px;
-    background-color: theme(colors.mgs.darkest);
-    z-index: 1;
-  }
+.playerPortrait img {
+  object-fit: contain;
+  background-color: #f0f0f0;
 }

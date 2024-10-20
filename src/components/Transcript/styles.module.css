@@ -1,0 +1,39 @@
+.transcriptContainer {
+  background-color: #f5f5f0;
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 30px auto 0;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  font-family: 'Courier New', monospace;
+}
+
+.transcriptContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
+}
+
+.transcriptTitle {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.transcriptText {
+  color: #333;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.6;
+  margin: 0;
+  padding-right: 10px;
+}
