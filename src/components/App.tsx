@@ -12,12 +12,6 @@ import { config, services, timeout } from "@/rtvi.config";
 import Session from "./Session";
 
 const assets = [
-  "/codeccall.wav",
-  "/codecfreq.wav",
-  "/codecopen.wav",
-  "/codecover.wav",
-  "/codecphonebook.wav",
-  "/codecphoneentry.wav",
   "/zip.wav",
   "/gunshot.wav",
   "/music.mp3",
