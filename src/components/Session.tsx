@@ -5,9 +5,11 @@ import {
   useVoiceClientEvent,
   useVoiceClientTransportState,
 } from "realtime-ai-react";
-import { CharacterEnum } from "@/rtvi.config";
+
 import { AppContext } from "@/context";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
+import { CharacterEnum } from "@/rtvi.config";
+
 import { Alert } from "./ui/alert";
 import Footer from "./Footer";
 import Gameover from "./Gameover";
