@@ -78,11 +78,10 @@ const OSD: React.FC = () => {
             className={botIsSpeaking ? styles.speaking : styles.notSpeaking}
           ></div>
           <div className={styles.characterInfo}>
+            <p className={styles.boldText}>{characterInfo.characterName}</p>
             <p className={styles.boldText}>
-              {characterInfo.characterName} - Level{" "}
-              {Number(characterInfo.level) + 1} {characterInfo.name}
+              Level {Number(characterInfo.level) + 1} {characterInfo.name}
             </p>
-            <p>({characterInfo.weakness})</p>
           </div>
         </div>
         <div className={`${styles.infoPanel} my-4 lg:my-0 lg:mx-6 flex-grow`}>
@@ -95,6 +94,10 @@ const OSD: React.FC = () => {
                   <span>{task}</span>
                 </li>
               ))}
+              <li className={styles.task}>
+                <span className={styles.bullet}>•</span>
+                <span>Weakness: {characterInfo.weakness}.</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -111,7 +114,7 @@ const OSD: React.FC = () => {
           ></div>
           <div className={styles.playerInfo}>
             <p className={styles.boldText}>{playerName}</p>
-            <p>
+            <p className={styles.boldText}>
               Level {userLevel} {localCharacter}
             </p>
           </div>
