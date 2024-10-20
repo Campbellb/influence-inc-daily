@@ -14,7 +14,6 @@ interface TitleScreenProps {
 
 const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
   const [started, setStarted] = useState(false);
-  const playCodecSound = usePlayCodecSound();
   const voiceClient = useVoiceClient()!;
 
   useEffect(() => {
@@ -32,11 +31,17 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
         <div className="bg-[url(/bg.jpg)] bg-cover absolute inset-0 z-0" />
       </div>
       <header className="text-center relative z-1 ">
-        <Image
-          src={Logo}
-          alt="Influence Inc."
-          className="opacity-0 animate-bgAppear mx-auto"
-        />
+        <h1
+          className="text-6xl font-bold text-white tracking-tight mb-4 drop-shadow-lg"
+          style={{
+            fontFamily: "'Arial Black', Helvetica, sans-serif",
+            textTransform: "uppercase",
+            letterSpacing: "0.05em",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
+          }}
+        >
+          Influence Inc.
+        </h1>
       </header>
       <div className="animate-appear relative p-8 w-full max-w-lg z-2 bg-white rounded-lg shadow-md">
         <div className="flex flex-col gap-6">
@@ -54,7 +59,6 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
             variant="primary"
             className="self-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
             onClick={() => {
-              playCodecSound("gunshot");
               setStarted(true);
 
               setTimeout(() => {

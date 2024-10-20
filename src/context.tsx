@@ -8,6 +8,7 @@ import {
   CHARACTERS,
   IDLE_PROMPT,
   PlayerLevelEnum,
+  PlayerLevelValue,
   RETURN_PROMPT,
 } from "./rtvi.config";
 
@@ -124,7 +125,10 @@ export const AppProvider: React.FC<
         {
           role: "system",
           content:
-            CHARACTERS.find((c) => c.name === newCharacter)?.prompt + `The `,
+            CHARACTERS.find((c) => c.name === newCharacter)?.prompt +
+            `The person you are talking to is currently a ${localCharacter}, and they are hoping to be promoted to ${
+              PlayerLevelValue[userLevel + 1]
+            }.`,
         },
       ];
 
@@ -159,7 +163,7 @@ export const AppProvider: React.FC<
 
       return newCharacter;
     },
-    [voiceClient, messageHistory, character]
+    [character, voiceClient, messageHistory, localCharacter, userLevel]
   );
 
   const runIdleCheck = useCallback(() => {
