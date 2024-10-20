@@ -39,6 +39,7 @@ interface AppContextType {
   setSecretValue: (value: number) => void;
   playerName: string;
   setPlayerName: (playerName: string) => void;
+  resetGameState: () => void;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -84,6 +85,9 @@ export const AppContext = createContext<AppContextType>({
   playerName: "",
   setPlayerName: () => {
     throw new Error("setPlayerName function must be overridden");
+  },
+  resetGameState: () => {
+    throw new Error("resetGameState function must be overridden");
   },
 });
 AppContext.displayName = "AppContext";
@@ -279,6 +283,52 @@ export const AppProvider: React.FC<
     }
   }, [voiceClient]);
 
+  const resetGameState = useCallback(async () => {
+    setUserLevel(1);
+    setLocalCharacter(PlayerLevelEnum.Intern);
+    setCharacter(CharacterEnum.Employee);
+    setMessageHistory({});
+
+    // Reset the voice client state
+    if (voiceClient) {
+      // Disconnect the current session
+      await voiceClient.disconnect();
+
+      // Set up a new configuration for the initial character
+      const newConfig = voiceClient.setConfigOptions([
+        {
+          service: "tts",
+          options: [
+            {
+              name: "voice",
+              value: CHARACTERS.find((c) => c.name === CharacterEnum.Employee)
+                ?.voice_id,
+            },
+          ],
+        },
+        {
+          service: "llm",
+          options: [
+            {
+              name: "initial_messages",
+              value: [
+                {
+                  role: "system",
+                  content:
+                    CHARACTERS.find((c) => c.name === CharacterEnum.Employee)
+                      ?.prompt || "",
+                },
+              ],
+            },
+          ],
+        },
+      ]);
+
+      // Update the voice client with the new configuration
+      await voiceClient.updateConfig(newConfig, true);
+    }
+  }, [voiceClient]);
+
   return (
     <AppContext.Provider
       value={{
@@ -301,6 +351,7 @@ export const AppProvider: React.FC<
         setSecretValue,
         playerName,
         setPlayerName,
+        resetGameState,
       }}
     >
       {children}

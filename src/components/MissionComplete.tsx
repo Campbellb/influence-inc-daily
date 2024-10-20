@@ -10,28 +10,21 @@ export type MissionCompleteProps = {
 };
 
 const MissionComplete: React.FC<MissionCompleteProps> = ({ onContinue }) => {
-  const mountedRef = useRef(false);
-  const playCodecSound = usePlayCodecSound();
-
-  useEffect(() => {
-    if (mountedRef.current) return;
-    mountedRef.current = true;
-
-    playCodecSound("gameover");
-  }, [playCodecSound]);
-
   return (
-    <div className="w-full h-full flex items-center">
-      <div className="animate-fadeIn relative max-w-2xl mx-auto flex flex-col items-center gap-8 p-8">
-        Congratulations! You completed the mission.
+    <div className="w-full h-full flex items-center justify-center bg-gray-100">
+      <div className="animate-fadeIn relative max-w-2xl mx-auto flex flex-col items-center gap-8 p-8 bg-white rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold text-gray-800">Congratulations!</h1>
+        <p className="text-xl text-gray-600 text-center">
+          You've successfully climbed the corporate ladder and impressed the
+          Executive! You're now ready for even greater challenges in the world
+          of Influence Inc.
+        </p>
         <Button
-          variant="ghost"
-          onClick={() => {
-            onContinue();
-          }}
-          className="animate-pulse"
+          variant="primary"
+          onClick={onContinue}
+          className="animate-pulse bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
         >
-          Start new game
+          Start a New Game
         </Button>
       </div>
     </div>

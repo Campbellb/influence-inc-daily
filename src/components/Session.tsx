@@ -16,6 +16,7 @@ import MissionComplete from "./MissionComplete";
 import OSD from "./OSD";
 import TitleScreen from "./TitleScreen";
 import Transcript from "./Transcript";
+import { CharacterEnum } from "@/rtvi.config";
 
 export default function Session() {
   const voiceClient = useVoiceClient()!;
@@ -26,7 +27,7 @@ export default function Session() {
     "idle" | "connecting" | "connected" | "gameover"
   >("idle");
   const [gameComplete, setGameComplete] = useState<boolean>(false);
-  const { checkForPromotion, isCalling, userLevel, localCharacter } =
+  const { checkForPromotion, isCalling, userLevel, localCharacter, character } =
     useContext(AppContext);
   const [showPhonebook, setShowPhonebook] = useState<boolean | undefined>(
     undefined
@@ -44,8 +45,14 @@ export default function Session() {
     useCallback(
       (transcript: string) => {
         checkForPromotion(transcript);
+        if (
+          character === CharacterEnum.Executive &&
+          transcript.includes("Anchors aweigh!")
+        ) {
+          setGameComplete(true);
+        }
       },
-      [checkForPromotion]
+      [checkForPromotion, character]
     )
   );
 
