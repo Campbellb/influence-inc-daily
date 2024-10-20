@@ -37,6 +37,8 @@ interface AppContextType {
   resetUserLevel: () => void;
   secretValue: number;
   setSecretValue: (value: number) => void;
+  playerName: string;
+  setPlayerName: (playerName: string) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -79,6 +81,10 @@ export const AppContext = createContext<AppContextType>({
   setSecretValue: () => {
     throw new Error("setSecretValue function must be overridden");
   },
+  playerName: "",
+  setPlayerName: () => {
+    throw new Error("setPlayerName function must be overridden");
+  },
 });
 AppContext.displayName = "AppContext";
 
@@ -103,6 +109,7 @@ export const AppProvider: React.FC<
   const [isCalling, setIsCalling] = useState<boolean>(false);
   const [userLevel, setUserLevel] = useState<number>(1);
   const [secretValue, setSecretValue] = useState<number>(0);
+  const [playerName, setPlayerName] = useState<string>("");
 
   // const playCodecSound = usePlayCodecSound();
 
@@ -141,6 +148,7 @@ export const AppProvider: React.FC<
         {
           role: "system",
           content:
+            `You are a key member of Influence Inc., engaging in a conversation with a new ambitious coworker named ${playerName}. ` +
             CHARACTERS.find((c) => c.name === newCharacter)?.prompt +
             `  If the player demonstrates exceptional skills related to your role, use the exact phrase: "${
               CHARACTERS.find((c) => c.name === character)?.promotionCriteria
@@ -191,7 +199,7 @@ export const AppProvider: React.FC<
       setCharacter(newCharacter);
       return newCharacter;
     },
-    [character, voiceClient, messageHistory]
+    [character, voiceClient, messageHistory, playerName]
   );
 
   const runIdleCheck = useCallback(() => {
@@ -313,6 +321,8 @@ export const AppProvider: React.FC<
         resetUserLevel,
         secretValue,
         setSecretValue,
+        playerName,
+        setPlayerName,
       }}
     >
       {children}

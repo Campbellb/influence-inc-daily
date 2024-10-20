@@ -15,8 +15,10 @@ interface TitleScreenProps {
 
 const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
   const [started, setStarted] = useState(false);
+  const [playerName, setPlayerName] = useState("");
   const voiceClient = useVoiceClient()!;
-  const { resetUserLevel } = useContext(AppContext);
+  const { resetUserLevel, setPlayerName: setContextPlayerName } =
+    useContext(AppContext);
 
   useEffect(() => {
     if (!voiceClient) return;
@@ -55,14 +57,27 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
             environment.
           </p>
 
+          <input
+            type="text"
+            value={playerName}
+            onChange={(e) => setPlayerName(e.target.value)}
+            placeholder="Enter your name"
+            className="border border-gray-300 rounded px-3 py-2"
+          />
+
           <DeviceSelect hideMeter={false} />
 
           <Button
             variant="primary"
             className="self-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
             onClick={async () => {
+              if (playerName.trim() === "") {
+                alert("Please enter your name before starting.");
+                return;
+              }
               setStarted(true);
               await resetUserLevel();
+              setContextPlayerName(playerName);
               setTimeout(() => {
                 handleStart();
               }, 2000);

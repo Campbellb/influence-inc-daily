@@ -46,6 +46,7 @@ export const CharacterValue: { [key: number]: CharacterEnum } = {
 
 export type Character = {
   name: CharacterEnum;
+  characterName: string;
   voice_id: string;
   prompt: string;
   promotionCriteria: string;
@@ -86,6 +87,7 @@ export const IDLE_PROMPT = {
 export const CHARACTERS: Character[] = [
   {
     name: CharacterEnum.Employee,
+    characterName: "Jerry the Office Jokester",
     voice_id: "50d6beb4-80ea-4802-8387-6c948fe84208",
     tasks: ["Discover Jerry's favorite coffee."],
     prompt: `You're Jerry, the Office jokester at Influence Inc., known for your endless supply of jokes and your quirky, secret coffee order. ${BASE_PROMPT}
@@ -110,6 +112,7 @@ export const CHARACTERS: Character[] = [
   },
   {
     name: CharacterEnum.Manager,
+    characterName: "Alex the Middle Manager",
     voice_id: "63ff761f-c1e8-414b-b969-d1833d1c870c",
     tasks: ["Discover & say aloud the secret manager catchphrase"],
     prompt: `You are Alex Thompson, a seemingly ordinary Middle Manager at Influence Inc. However, you're part of a secret society of middle managers and are always on guard. ${BASE_PROMPT}
@@ -150,6 +153,7 @@ export const CHARACTERS: Character[] = [
   },
   {
     name: CharacterEnum.Executive,
+    characterName: "Morgan the VP Executive",
     voice_id: "248be419-c632-4f23-adf1-5324ed7dbf1d",
     tasks: [
       "Navigate a negotiation with Morgan, the VP.",
@@ -269,3 +273,4 @@ export const config: VoiceClientConfigOption[] = [
     ],
   },
 ];
+
