@@ -3,9 +3,9 @@ export function getPlayerImage(level: number): string {
     case 1:
       return "/intern.png";
     case 2:
-      return "/junior_associate.png";
+      return "/employee.png";
     case 3:
-      return "/associate.png";
+      return "/manager.png";
     case 4:
       return "/senior_associate.png";
     case 5:

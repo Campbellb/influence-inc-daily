@@ -62,7 +62,7 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
             value={playerName}
             onChange={(e) => setPlayerName(e.target.value)}
             placeholder="Enter your name"
-            className="border border-gray-300 rounded px-3 py-2"
+            className="border border-gray-300 rounded px-3 py-2 text-gray-700 bg-white"
           />
 
           <DeviceSelect hideMeter={false} />
@@ -78,9 +78,7 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
               setStarted(true);
               await resetUserLevel();
               setContextPlayerName(playerName);
-              setTimeout(() => {
-                handleStart();
-              }, 2000);
+              handleStart();
             }}
           >
             Start Your Career

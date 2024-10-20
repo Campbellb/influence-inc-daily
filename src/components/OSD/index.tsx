@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import Image from "next/image";
 import { VoiceEvent } from "realtime-ai";
 import { useVoiceClientEvent } from "realtime-ai-react";
 
@@ -66,9 +67,11 @@ const OSD: React.FC = () => {
     <div className={`${styles.container} w-full mx-auto p-4 md:p-6 lg:p-8`}>
       <div className={`${styles.inner} flex flex-col lg:flex-row`}>
         <div className={`${styles.characterPortrait} mb-4 lg:mb-0`}>
-          <img
-            src={characterImageMap[character?.toLowerCase()]}
-            alt={character}
+          <Image
+            src={character ? characterImageMap[character.toLowerCase()] : ""}
+            alt={character || ""}
+            width={200}
+            height={200}
             className="w-full h-full object-cover"
           />
           <div

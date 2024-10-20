@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useCallback, useState } from "react";
 import { LLMContext, LLMContextMessage, LLMHelper } from "realtime-ai";
 import { useVoiceClient } from "realtime-ai-react";
 
-// import { usePlayCodecSound } from "./hooks/usePlayCodecSound";
+import { usePlayCodecSound } from "./hooks/usePlayCodecSound";
 import {
   CharacterEnum,
   CHARACTERS,
@@ -111,7 +111,7 @@ export const AppProvider: React.FC<
   const [secretValue, setSecretValue] = useState<number>(0);
   const [playerName, setPlayerName] = useState<string>("");
 
-  // const playCodecSound = usePlayCodecSound();
+  const playCodecSound = usePlayCodecSound();
 
   const getCurrentContext = useCallback(async (): Promise<LLMContext> => {
     const llmHelper = voiceClient.getHelper("llm") as LLMHelper;
@@ -216,90 +216,68 @@ export const AppProvider: React.FC<
   const checkForPromotion = useCallback(
     (transcript: string) => {
       const currentCharacter = CHARACTERS.find((c) => c.name === character);
-      console.log("currentCharacter", currentCharacter);
-      console.log("transcript", transcript);
       if (
         currentCharacter &&
         transcript.includes(currentCharacter.promotionCriteria)
       ) {
-        setUserLevel((prevLevel) => prevLevel + 1);
-        setLocalCharacter(PlayerLevelValue[userLevel + 1]);
+        const newLevel = userLevel + 1;
+        setUserLevel(newLevel);
+        setLocalCharacter(PlayerLevelValue[newLevel]);
         console.log("level up!");
-        switchCharacter(CharacterValue[userLevel + 1]);
+        playCodecSound("levelup");
+        setTimeout(() => {
+          switchCharacter(CharacterValue[newLevel]);
+        }, 10000);
       }
     },
-    [character, switchCharacter, userLevel]
+    [character, userLevel, playCodecSound, switchCharacter]
   );
 
-  const resetUserLevel = useCallback(() => {
+  const resetUserLevel = useCallback(async () => {
     setUserLevel(1);
     setLocalCharacter(PlayerLevelEnum.Intern);
     setCharacter(CharacterEnum.Employee);
-    switchCharacter(CharacterEnum.Employee);
-  }, [switchCharacter]);
+    setMessageHistory({});
 
-  // const callFrequency = useCallback(
-  //   async (frequency: number) => {
-  //     if (!voiceClient) return;
+    // Reset the voice client state
+    if (voiceClient) {
+      // Disconnect the current session
+      await voiceClient.disconnect();
 
-  //     console.debug("Calling frequency " + frequency);
+      // Set up a new configuration for the initial character
+      const newConfig = voiceClient.setConfigOptions([
+        {
+          service: "tts",
+          options: [
+            {
+              name: "voice",
+              value: CHARACTERS.find((c) => c.name === CharacterEnum.Employee)
+                ?.voice_id,
+            },
+          ],
+        },
+        {
+          service: "llm",
+          options: [
+            {
+              name: "initial_messages",
+              value: [
+                {
+                  role: "system",
+                  content:
+                    CHARACTERS.find((c) => c.name === CharacterEnum.Employee)
+                      ?.prompt || "",
+                },
+              ],
+            },
+          ],
+        },
+      ]);
 
-  //     // Find character in CHARACTERS array
-  //     const newCharacter = CHARACTERS.find(
-  //       (c) => c.frequency === frequency.toFixed(2)
-  //     );
-
-  //     if (newCharacter?.name === character) {
-  //       console.debug("Already connected");
-  //       return;
-  //     }
-
-  //     setCurrentFrequency(frequency);
-
-  //     // Interrupt bot
-  //     if (voiceClient.state === "ready") {
-  //       await voiceClient.action({
-  //         service: "tts",
-  //         action: "interrupt",
-  //         arguments: [],
-  //       });
-  //     }
-
-  //     setIsCalling(true);
-
-  //     console.debug("Calling " + newCharacter?.name);
-
-  //     await delay(1000);
-  //     playCodecSound("call");
-  //     await delay(1000);
-
-  //     if (!newCharacter) {
-  //       setCharacter(null);
-  //       setIsCalling(false);
-  //       return false;
-  //     }
-
-  //     switchCharacter(newCharacter.name);
-
-  //     // Change state to new character
-  //     setCharacter(newCharacter.name);
-  //     setIsCalling(false);
-
-  //     // Check if we have discovered this frequency before
-  //     if (!discoveredFrequencies.includes(newCharacter.name)) {
-  //       // Add character to discovered frequencies
-  //       console.debug("Discovered frequency for " + newCharacter.name);
-  //       setDiscoveredFrequency((prev) => [...prev, newCharacter.name]);
-  //     }
-  //   },
-  //   [
-  //     discoveredFrequencies,
-  //     switchCharacter,
-  //     character,
-  //     playCodecSound,
-  //     voiceClient,
-  //   ]
-  // );
+      // Update the voice client with the new configuration
+      await voiceClient.updateConfig(newConfig, true);
+    }
+  }, [voiceClient]);
 
   return (
     <AppContext.Provider
