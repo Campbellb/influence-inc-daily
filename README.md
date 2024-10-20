@@ -1,41 +1,47 @@
-[![Try](https://img.shields.io/badge/try_it-here-blue)](https://mgsx-daily-bots.vercel.app/)
-[![Deploy](https://img.shields.io/badge/Deploy_to_Vercel-black?style=flat&logo=Vercel&logoColor=white)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fjptraylors%2Fmgsx-daily-botso&env=DAILY_BOTS_URL,DAILY_BOTS_API_KEY,&project-name=mgsx-codec&repository-name=mgsx-daily-bots)
+# Influence Inc. - Corporate Ladder Climbing Simulator
 
+[![Try](https://img.shields.io/badge/try_it-here-blue)](https://influence-inc-daily.vercel.app/)
 
+Influence Inc. is an immersive corporate simulation game powered by [Daily Bots](https://bots.daily.co). Navigate office politics, impress your superiors, and climb the corporate ladder in this unique AI-driven experience.
 
-# Metal Gear Solid Codec - Daily Bots Demo
+## Game Overview
 
-<img src="src/app/opengraph-image.png" width="420px">
+In Influence Inc., you start as an intern and work your way up through the corporate ranks. Engage in conversations with AI-powered characters, each with their own quirks and secrets. Your goal is to impress them and earn promotions by uncovering their hidden weaknesses and demonstrating your skills.
 
-AI Codec Call powered by [Daily Bots](https://bots.daily.co).
+## Key Features
+
+- AI-powered characters with unique personalities and challenges
+- Dynamic conversations that adapt to your choices
+- Multiple levels of corporate hierarchy to climb
+- Voice-based interaction for an immersive experience
+
+## How to Play
+
+1. Start as an intern and engage in conversations with your AI colleagues.
+2. Uncover each character's secret weakness and use it to your advantage.
+3. Impress your superiors to earn promotions and climb the corporate ladder.
+4. Reach the top of the company by outsmarting the Executive and potentially even higher positions.
 
 ## Run it locally
 
-### Grab a Daily Bots API key
+### Prerequisites
 
-Sign-up here: [https://bots.daily.co](https://bots.daily.co)
-
-### Configure your local environment
-
-```shell
+1. Grab a Daily Bots API key by signing up at [https://bots.daily.co](https://bots.daily.co)
+2. Configure your local environment
+```
 cp env.example .env.local
 ```
 
-`DAILY_BOTS_URL` URL of the Daily Bots `start` endpoint (https://api.daily.co/v1/bots/start)
-
-`DAILY_BOTS_API_KEY` your Daily API key obtained by registering at https://bots.daily.co.
-
 ### Install dependencies
-
-```shell
-yarn 
+```
+yarn
 ```
 
 ### Run the project
-
-```shell
+```
 yarn run dev
 ```
+
 
 ## How does this work?
 
@@ -61,13 +67,3 @@ This project exposes three server-side routes:
 - optional: [api/dialout/route.ts](app/api/dialout/route.ts)
 
 The routes project a secure way to pass any required secrets or configuration directly to the Daily Bots API. Your `NEXT_PUBLIC_BASE_URL` must point to your `/api` route and passed to the `VoiceClient`. 
-
-The routes are passed a `config` array and `services` map, which can be passed to the Daily Bots REST API, or modified securely. 
-
-Daily Bots `https://api.daily.co/v1/bots/start` has some required properties, which you can read more about [here](https://docs.dailybots.ai/api-reference/endpoint/startBot). You must set:
-
-- `bot_profile`
-- `max_duration`
-- `config`
-- `services`
-- Optional, if using OpenAI: `api_keys`
