@@ -32,6 +32,7 @@ interface AppContextType {
   setIsCalling: (isCalling: boolean) => void;
   userLevel: number;
   setUserLevel: (level: number) => void;
+  checkForPromotion: (transcript: string) => void;
 }
 
 export const AppContext = createContext<AppContextType>({
@@ -63,6 +64,9 @@ export const AppContext = createContext<AppContextType>({
   userLevel: 1,
   setUserLevel: () => {
     throw new Error("setUserLevel function must be overridden");
+  },
+  checkForPromotion: () => {
+    throw new Error("checkForPromotion function must be overridden");
   },
 });
 AppContext.displayName = "AppContext";
@@ -126,9 +130,9 @@ export const AppProvider: React.FC<
           role: "system",
           content:
             CHARACTERS.find((c) => c.name === newCharacter)?.prompt +
-            `The person you are talking to is currently a ${localCharacter}, and they are hoping to be promoted to ${
-              PlayerLevelValue[userLevel + 1]
-            }.`,
+            `  If the player demonstrates exceptional skills related to your role, use the exact phrase: "${
+              CHARACTERS.find((c) => c.name === character)?.promotionCriteria
+            }"`,
         },
       ];
 
@@ -163,7 +167,7 @@ export const AppProvider: React.FC<
 
       return newCharacter;
     },
-    [character, voiceClient, messageHistory, localCharacter, userLevel]
+    [character, voiceClient, messageHistory]
   );
 
   const runIdleCheck = useCallback(() => {
@@ -176,6 +180,21 @@ export const AppProvider: React.FC<
     const llmHelper = voiceClient.getHelper("llm") as LLMHelper;
     llmHelper.appendToMessages(IDLE_PROMPT, true);
   }, [voiceClient, character]);
+
+  const checkForPromotion = useCallback(
+    (transcript: string) => {
+      const currentCharacter = CHARACTERS.find((c) => c.name === character);
+      if (
+        currentCharacter &&
+        transcript.includes(currentCharacter.promotionCriteria)
+      ) {
+        setUserLevel((prevLevel) => prevLevel + 1);
+        setLocalCharacter(PlayerLevelValue[userLevel + 1]);
+        // switchCharacter(CHARACTERS[userLevel + 1].name);
+      }
+    },
+    [character, userLevel]
+  );
 
   // const callFrequency = useCallback(
   //   async (frequency: number) => {
@@ -256,6 +275,7 @@ export const AppProvider: React.FC<
         setIsCalling,
         userLevel,
         setUserLevel,
+        checkForPromotion,
       }}
     >
       {children}

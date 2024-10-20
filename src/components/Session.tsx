@@ -28,7 +28,8 @@ export default function Session() {
     "idle" | "connecting" | "connected" | "gameover"
   >("idle");
   const [gameComplete, setGameComplete] = useState<boolean>(false);
-  const { switchCharacter, isCalling } = useContext(AppContext);
+  const { checkForPromotion, isCalling, userLevel, localCharacter } =
+    useContext(AppContext);
   const [showPhonebook, setShowPhonebook] = useState<boolean | undefined>(
     undefined
   );
@@ -42,13 +43,12 @@ export default function Session() {
 
   useVoiceClientEvent(
     VoiceEvent.BotTranscript,
-    useCallback((transcript: string) => {
-      if (transcript.toLocaleLowerCase().includes("extraction on the way")) {
-        setTimeout(() => {
-          setGameComplete(true);
-        }, 4000);
-      }
-    }, [])
+    useCallback(
+      (transcript: string) => {
+        checkForPromotion(transcript);
+      },
+      [checkForPromotion]
+    )
   );
 
   useVoiceClientEvent(VoiceEvent.BotStoppedSpeaking, () => {
@@ -145,7 +145,9 @@ export default function Session() {
     <div className="flex flex-col h-full items-center w-full">
       <OSD />
       <Transcript active={!showPhonebook} />
-      {/* <Phonebook active={showPhonebook} /> */}
+      <p>
+        {localCharacter} ({userLevel})
+      </p>
       <Footer handleDisconnect={() => disconnect()} />
     </div>
   );
