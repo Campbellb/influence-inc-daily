@@ -60,9 +60,9 @@ const TitleScreen: React.FC<TitleScreenProps> = ({ handleStart }) => {
           <Button
             variant="primary"
             className="self-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-            onClick={() => {
+            onClick={async () => {
               setStarted(true);
-              resetUserLevel();
+              await resetUserLevel();
               setTimeout(() => {
                 handleStart();
               }, 2000);

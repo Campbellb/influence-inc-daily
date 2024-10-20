@@ -188,7 +188,7 @@ export const AppProvider: React.FC<
       } catch (e) {
         throw new Error("Error updating voice client config");
       }
-
+      setCharacter(newCharacter);
       return newCharacter;
     },
     [character, voiceClient, messageHistory]
@@ -227,7 +227,8 @@ export const AppProvider: React.FC<
     setUserLevel(1);
     setLocalCharacter(PlayerLevelEnum.Intern);
     setCharacter(CharacterEnum.Employee);
-  }, []);
+    switchCharacter(CharacterEnum.Employee);
+  }, [switchCharacter]);
 
   // const callFrequency = useCallback(
   //   async (frequency: number) => {

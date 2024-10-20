@@ -42,3 +42,12 @@
   color: #38c17b;
   margin-right: 10px;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.taskFadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}

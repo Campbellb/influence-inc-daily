@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { VoiceEvent } from "realtime-ai";
 import { useVoiceClientEvent } from "realtime-ai-react";
 
@@ -8,12 +8,26 @@ import { getPlayerImage } from "@/utils/getPlayerImage";
 
 import styles from "./styles.module.css";
 
+const characterImageMap: { [key: string]: string } = {
+  employee: "/character1.png",
+  manager: "/character2.png",
+  executive: "/character3.png",
+};
+
 const OSD: React.FC = () => {
   const { character, localCharacter, userLevel } = useContext(AppContext);
   const [botIsSpeaking, setBotIsSpeaking] = useState<boolean>(false);
   const [localIsSpeaking, setLocalIsSpeaking] = useState<boolean>(false);
+  const [currentTasks, setCurrentTasks] = useState<string[]>([]);
 
-  const currentCharacter = CHARACTERS.find((c) => c.name === character);
+  useEffect(() => {
+    const currentCharacter = CHARACTERS.find((c) => c.name === character);
+    if (currentCharacter) {
+      setCurrentTasks(currentCharacter.tasks);
+      console.log("Character changed:", character);
+      console.log("New tasks:", currentCharacter.tasks);
+    }
+  }, [character]);
 
   useVoiceClientEvent(VoiceEvent.RemoteAudioLevel, (vol: number) => {
     setBotIsSpeaking(vol > 0.005);
@@ -30,7 +44,7 @@ const OSD: React.FC = () => {
       <div className={`${styles.inner} flex flex-col lg:flex-row`}>
         <div className={`${styles.characterPortrait} mb-4 lg:mb-0`}>
           <img
-            src={`/${character?.toLowerCase()}_base.png`}
+            src={characterImageMap[character?.toLowerCase() || "employee"]}
             alt={character}
             className="w-full h-full object-cover"
           />
@@ -45,8 +59,8 @@ const OSD: React.FC = () => {
               {localCharacter} <span>(Level {userLevel})</span>
             </p>
             <ul className={styles.tasks}>
-              {currentCharacter?.tasks.map((task, index) => (
-                <li key={index} className={styles.task}>
+              {currentTasks.map((task, index) => (
+                <li key={`${character}-${index}`} className={styles.task}>
                   <span className={styles.bullet}>•</span>
                   <span>{task}</span>
                 </li>

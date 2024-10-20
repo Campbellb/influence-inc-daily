@@ -21,7 +21,10 @@ const QuestLog: React.FC = () => {
       </div>
       <ul className={styles.tasks}>
         {currentCharacter.tasks.map((task, index) => (
-          <li key={index} className={styles.task}>
+          <li
+            key={`${character}-${index}`}
+            className={`${styles.task} ${styles.taskFadeIn}`}
+          >
             <span className={styles.bullet}>•</span>
             <span>{task}</span>
           </li>
