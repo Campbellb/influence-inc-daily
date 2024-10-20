@@ -58,9 +58,6 @@ export default function Session() {
   });
 
   useEffect(() => {
-    // Update app state based on voice client transport state.
-    // We only need a subset of states to determine the ui state,
-    // so this effect helps avoid excess inline conditionals.
     switch (transportState) {
       case "authenticating":
       case "connecting":
