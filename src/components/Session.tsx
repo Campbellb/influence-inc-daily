@@ -10,13 +10,10 @@ import { AppContext } from "@/context";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
 
 import { Alert } from "./ui/alert";
-import CallNotification from "./CallNotification";
 import Footer from "./Footer";
 import Gameover from "./Gameover";
 import MissionComplete from "./MissionComplete";
 import OSD from "./OSD";
-import Phonebook from "./Phonebook";
-import QuestLog from "./QuestLog";
 import TitleScreen from "./TitleScreen";
 import Transcript from "./Transcript";
 

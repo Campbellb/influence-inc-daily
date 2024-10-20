@@ -11,16 +11,6 @@
   font-family: 'Courier New', monospace;
 }
 
-.transcriptContainer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 20px;
-  right: 20px;
-  height: 1px;
-  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
-}
-
 .transcriptTitle {
   font-size: 1.2rem;
   color: #333;

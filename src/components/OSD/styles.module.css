@@ -16,16 +16,6 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
-.inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 40px;
-  right: 40px;
-  height: 1px;
-  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
-}
-
 .characterPortrait,
 .playerPortrait {
   width: 300px;
@@ -49,23 +39,11 @@
 .infoPanel {
   flex-grow: 1;
   margin: 0 40px;
-  background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 0;
   padding: 40px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
   font-family: 'Courier New', monospace;
-}
-
-.infoPanel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 20px;
-  right: 20px;
-  height: 1px;
-  background: repeating-linear-gradient(to right, #ccc, #ccc 5px, transparent 5px, transparent 10px);
 }
 
 .infoTitle {

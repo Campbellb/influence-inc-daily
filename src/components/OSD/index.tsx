@@ -98,11 +98,13 @@ const OSD: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className={`${styles.playerPortrait} mt-4 lg:mt-0`}>
-          <img
+        <div className={`${styles.playerPortrait} mt-4 lg:mt-0 relative`}>
+          <Image
             src={playerImage}
             alt={`Level ${userLevel} - ${localCharacter}`}
-            className="w-full h-full object-contain"
+            width={200}
+            height={200}
+            className="w-full h-full object-cover"
           />
           <div
             className={localIsSpeaking ? styles.speaking : styles.notSpeaking}
