@@ -30,6 +30,9 @@ const assets = [
   "/roy_base.png",
   "/snake_base.png",
   "/bg.jpg",
+  "/intern_bg.jpg",
+  "/employee_bg.jpg",
+  "/manager_bg.jpg",
 ];
 
 export default function App() {

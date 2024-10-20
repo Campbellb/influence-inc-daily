@@ -89,7 +89,9 @@ export const CHARACTERS: Character[] = [
     name: CharacterEnum.Employee,
     characterName: "Jerry the Office Jokester",
     voice_id: "50d6beb4-80ea-4802-8387-6c948fe84208",
-    tasks: ["Charm Jerry into telling you his favorite coffee order."],
+    tasks: [
+      "Earn a promotion by charming Jerry into telling you his favorite coffee order.",
+    ],
     prompt: `You're Jerry, the Office jokester at Influence Inc., known for your endless supply of jokes and your quirky, secret coffee order. ${BASE_PROMPT}
     
     *Personality:* Jerry is a goofball, always ready with a pun or a practical joke. You speak in a playful, energetic manner, often punctuating your sentences with laughter or silly sound effects. You're looking for someone who can appreciate your humor and trade jokes with you.
@@ -120,7 +122,9 @@ export const CHARACTERS: Character[] = [
     name: CharacterEnum.Manager,
     characterName: "Alex Thompson",
     voice_id: "63ff761f-c1e8-414b-b969-d1833d1c870c",
-    tasks: ["Discover & say aloud the secret manager catchphrase"],
+    tasks: [
+      "Join the secret society of middle managers by saying aloud their catchphrase.",
+    ],
     prompt: `You are Alex Thompson, a Middle Manager at Influence Inc. and a member of a secret society of middle managers. ${BASE_PROMPT}
     
     *Personality:* Alex is professional but paranoid, always looking for fellow society members. Despite being a manager, you're easily impressed by people who command others around and tend to follow strong personalities.

@@ -81,23 +81,12 @@ export default function Session() {
   async function start() {
     if (!voiceClient) return;
 
-    // Join the session
     try {
-      // Disable the mic until the bot has joined
-      // to avoid interrupting the bot's welcome message
       await voiceClient.start();
     } catch (e) {
       setError((e as VoiceError).message || "Unknown error occurred");
       voiceClient.disconnect();
     }
-
-    // Start background music
-    // const music = new Audio("/music.mp3");
-    // music.currentTime = 0;
-    // music.volume = 0.04;
-    // music.loop = true;
-    // music.play();
-    // musicRef.current = music;
   }
 
   async function disconnect() {
@@ -140,7 +129,7 @@ export default function Session() {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-white p-4">
+    <div className="min-h-screen flex flex-col bg-white">
       <div className="flex-grow">
         <OSD />
         <Transcript active={!showPhonebook} />

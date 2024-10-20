@@ -19,7 +19,7 @@ const Footer: React.FC<FooterProps> = ({ handleDisconnect }) => {
     <footer className="flex flex-row w-full items-end justify-between mt-auto">
       <div className="flex flex-row gap-6 items-end">
         <Button
-          variant={muted ? "mute" : "ghost"}
+          variant={muted ? "primary" : "outline"}
           size="sm"
           onClick={() => {
             if (muted) {
@@ -29,6 +29,7 @@ const Footer: React.FC<FooterProps> = ({ handleDisconnect }) => {
             }
             setMuted(!muted);
           }}
+          className="text-black"
         >
           {muted ? "Unmute" : "Mute"}
         </Button>
