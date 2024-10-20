@@ -5,10 +5,9 @@ import {
   useVoiceClientEvent,
   useVoiceClientTransportState,
 } from "realtime-ai-react";
-
+import { CharacterEnum } from "@/rtvi.config";
 import { AppContext } from "@/context";
 import { useIdleTimer } from "@/hooks/useIdleTimer";
-
 import { Alert } from "./ui/alert";
 import Footer from "./Footer";
 import Gameover from "./Gameover";
@@ -16,7 +15,6 @@ import MissionComplete from "./MissionComplete";
 import OSD from "./OSD";
 import TitleScreen from "./TitleScreen";
 import Transcript from "./Transcript";
-import { CharacterEnum } from "@/rtvi.config";
 
 export default function Session() {
   const voiceClient = useVoiceClient()!;

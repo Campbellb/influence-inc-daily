@@ -15,9 +15,9 @@ const MissionComplete: React.FC<MissionCompleteProps> = ({ onContinue }) => {
       <div className="animate-fadeIn relative max-w-2xl mx-auto flex flex-col items-center gap-8 p-8 bg-white rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold text-gray-800">Congratulations!</h1>
         <p className="text-xl text-gray-600 text-center">
-          You've successfully climbed the corporate ladder and impressed the
-          Executive! You're now ready for even greater challenges in the world
-          of Influence Inc.
+          You&apos;ve successfully climbed the corporate ladder and impressed
+          the Executive! You&apos;re now ready for even greater challenges in
+          the world of Influence Inc.
         </p>
         <Button
           variant="primary"
